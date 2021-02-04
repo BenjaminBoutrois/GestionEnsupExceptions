@@ -34,6 +34,15 @@
         </nav>
         <!-- Masthead-->
 
+<%
+String error = (String) session.getAttribute("error");
+if (error != null)
+{
+%>
+	<div class="error"><%=error %></div>
+<%
+}
+%>
         
         <!-- Contact Section-->
         <section class="page-section" id="contact">

@@ -60,6 +60,8 @@ public class ConnectionServlet extends HttpServlet
 	 */
 	public void connect(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
+		HttpSession session = request.getSession();
+		
 		try
 		{
 			User user = userService.getUser(request.getParameter("login"), request.getParameter("password"));
@@ -69,18 +71,19 @@ public class ConnectionServlet extends HttpServlet
 					&& user.getPassword().equalsIgnoreCase(request.getParameter("password")))
 			{
 				dispatcher = request.getRequestDispatcher("home.jsp");
-				HttpSession session = request.getSession();
 				session.setAttribute("user", user);
 			}
 			else
 			{
 				dispatcher = request.getRequestDispatcher("index.jsp");
+				session.setAttribute("error", "Login et/ou mot de passe incorrect(s).");
 			}
 		}
 		catch(Exception e)
 		{
 			// TODO beboutro : Ajouter gestion exceptions
 			dispatcher = request.getRequestDispatcher("index.jsp");
+			session.setAttribute("error", "Impossible de joindre le service distant et/ou la base de données.");
 		}
 
 		dispatcher.forward(request, response);
